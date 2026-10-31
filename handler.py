@@ -41,10 +41,13 @@ def carrega_modelo():
     global MODELO
     if MODELO is None:
         t0 = time.time()
+        # optimize=False desliga o torch.compile: no host do serverless ele falha
+        # com BackendCompilerFailed (medido em 31/10/2026)
         try:
-            MODELO = VoxCPM.from_pretrained("openbmb/VoxCPM2", device="cuda", load_denoiser=False)
+            MODELO = VoxCPM.from_pretrained("openbmb/VoxCPM2", device="cuda",
+                                            load_denoiser=False, optimize=False)
         except TypeError:
-            MODELO = VoxCPM.from_pretrained("openbmb/VoxCPM2", device="cuda")
+            MODELO = VoxCPM.from_pretrained("openbmb/VoxCPM2", device="cuda", optimize=False)
         print(f"modelo carregado em {time.time()-t0:.0f}s", flush=True)
     return MODELO
 
