@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED=1 \
     HF_HOME=/root/.cache/huggingface \
     TOKENIZERS_PARALLELISM=false
 
-RUN pip install --no-cache-dir voxcpm==2.0.3 soundfile librosa runpod
+RUN pip install --no-cache-dir --ignore-installed voxcpm==2.0.3 soundfile librosa runpod
 
 # pesos dentro da imagem: o cold start não depende de download
 RUN python -c "from voxcpm import VoxCPM; VoxCPM.from_pretrained('openbmb/VoxCPM2', load_denoiser=False, device='cpu')" || \
